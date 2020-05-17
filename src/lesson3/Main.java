@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Main {
-    static final int PAGE_SIZE = 1800;
 
     public static void main(String[] args) throws IOException {
 //        FileInputStream fis = new FileInputStream("123/file1.txt");
@@ -31,16 +30,6 @@ public class Main {
 //        in.close();
 //        fos.close();
 
-        RandomAccessFile raf = new RandomAccessFile("123/book.txt", "r");
-        int page = 1;
-        raf.seek((page - 1) * PAGE_SIZE);
-        int x;
-        for (int i = 0; i < PAGE_SIZE; i++) {
-            if ((x = raf.read()) != -1) {
-                System.out.print((char) x);
-            }
-        }
-        raf.close();
 
     }
 }
