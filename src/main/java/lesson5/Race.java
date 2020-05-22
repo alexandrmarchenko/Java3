@@ -2,6 +2,7 @@ package lesson5;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Race {
 
@@ -11,6 +12,8 @@ public class Race {
     private CountDownLatch raceEndLatch;
     private CountDownLatch raceReadyLatch;
     private CyclicBarrier readBarrier;
+
+    private AtomicInteger place = new AtomicInteger(0);
 
     public Race(Track track, Car[] cars) {
         this.track = track;
@@ -22,6 +25,7 @@ public class Race {
         for (int i = 0; i < cars.length; i++) {
             raceThreads[i] = new RaceThread(track,
                     cars[i],
+                    place,
                     this.raceEndLatch,
                     this.raceReadyLatch,
                     this.readBarrier

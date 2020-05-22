@@ -2,6 +2,7 @@ package lesson5;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class RaceThread implements Runnable {
 
@@ -12,12 +13,16 @@ public class RaceThread implements Runnable {
     private CountDownLatch raceReadyLatch;
     private CyclicBarrier readyBarrier;
 
-    public RaceThread(Track track, Car car, CountDownLatch raceEndLatch, CountDownLatch raceReadyLatch, CyclicBarrier readyBarrier) {
+    private AtomicInteger place;
+
+
+    public RaceThread(Track track, Car car, AtomicInteger place, CountDownLatch raceEndLatch, CountDownLatch raceReadyLatch, CyclicBarrier readyBarrier) {
         this.track = track;
         this.car = car;
         this.raceEndLatch = raceEndLatch;
         this.raceReadyLatch = raceReadyLatch;
         this.readyBarrier = readyBarrier;
+        this.place = place;
     }
 
     @Override
@@ -33,6 +38,9 @@ public class RaceThread implements Runnable {
         }
         for (int i = 0; i < track.getStages().size(); i++) {
             track.getStages().get(i).go(this.car);
+        }
+        if (place.incrementAndGet() == 1) {
+            System.out.println(this.car.getName() + " - WIN!");
         }
         raceEndLatch.countDown();
     }
